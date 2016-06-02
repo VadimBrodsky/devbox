@@ -2,3 +2,4 @@
 *.swo
 home/*
 www/*
+vagrant/.vagrant/*
