@@ -15,6 +15,7 @@ SERVER_TIMEZONE = 'EST'
 
 RUBY = '2.3.0'
 RUBY_GEMS = %q[bundler sass pry rubocop rails sinatra middleman jekyll ruby_parser rspec]
+NODE_MODULES = %q[gulp bower coffee-script elm]
 HOME = '/home/vagrant'
 
 Vagrant.configure(2) do |config|
@@ -23,7 +24,7 @@ Vagrant.configure(2) do |config|
   # Setup networking in bridged mode
   config.vm.network "public_network", ip: IP
 
-  # Setup synced folers
+  # Setup synced folders
   # config.vm.synced_folder '.', '/vagrant', disabled: true
   config.vm.synced_folder "../home", "/home/vagrant/",
     id: "home",
@@ -45,16 +46,24 @@ Vagrant.configure(2) do |config|
 
     # Limit CPU execution to 50%
     # vb.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
-
-    # Set the timesync threshold to 10 seconds, instead of the default 20 minutes
-    # vb.customize ["guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 10000]
   end
+
+  # Removes "stdin: is not a tty" annoyances
+  config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'" 
 
   config.vm.provision 'shell', path: './scripts/base.sh', args: [SERVER_SWAP, SERVER_TIMEZONE]
   config.vm.provision 'shell', path: './scripts/update.sh'
+
+  # Packages
   config.vm.provision 'shell', path: './scripts/git.sh'
   config.vm.provision 'shell', path: './scripts/tmux.sh'
-  config.vm.provision 'shell', path: './scripts/rbenv.sh', privileged: false
-  config.vm.provision 'shell', path: './scripts/ruby.sh', args: [RUBY, RUBY_GEMS], privileged: false
+  config.vm.provision 'shell', path: './scripts/docker.sh', args: 'permissions'
+
+  # Languages
+  # config.vm.provision 'shell', path: './scripts/rbenv.sh', privileged: false
+  # config.vm.provision 'shell', path: './scripts/ruby.sh', args: [RUBY, RUBY_GEMS], privileged: false
+  # config.vm.provision 'shell', path: './scripts/node.sh', args: [NODE_MODULES],  privileged: false
+
+  # Customizations
   config.vm.provision 'shell', path: './scripts/dotfiles.sh', privileged: false
 end
