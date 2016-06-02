@@ -1,0 +1,52 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# BOX = 'ubuntu/xenial64'
+BOX = 'geerlingguy/ubuntu1604'
+
+IP = '10.0.9.98'
+HOSTNAME = 'U6'
+SERVER_MEMORY = 1024
+SERVER_CPUS = 1
+
+RUBY = '2.3.0'
+RUBY_GEMS = %q[bundler sass pry rubocop rails sinatra middleman jekyll ruby_parser]
+HOME = '/home/vagrant'
+
+Vagrant.configure(2) do |config|
+  config.vm.box = BOX
+
+  # Setup networking in bridged mode
+  config.vm.network "public_network", ip: IP
+
+  # Setup synced folers
+  # config.vm.synced_folder '.', '/vagrant', disabled: true
+  config.vm.synced_folder "../home", "/home/vagrant/",
+    id: "home",
+    create: true
+    # :nfs => true,
+    # :mount_options => ['nolock,vers=3,udp,noatime,actimeo=2,fsc']
+  config.vm.synced_folder "../www", "/var/www",
+    id: "www",
+    create: true
+    # group: "www-data",
+    # owner: "www-data"
+
+  # VirtualBox Specifics
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = HOSTNAME
+    vb.gui = false
+    vb.cpus = SERVER_CPUS
+    vb.memory = SERVER_MEMORY
+
+    # Limit CPU execution to 50%
+    # vb.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
+
+    # Set the timesync threshold to 10 seconds, instead of the default 20 minutes
+    # vb.customize ["guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 10000]
+  end
+
+  config.vm.provision 'shell', path: './scripts/update.sh'
+  config.vm.provision 'shell', path: './scripts/dotfiles.sh'
+  config.vm.provision 'shell', path: './scripts/tmux.sh'
+end
