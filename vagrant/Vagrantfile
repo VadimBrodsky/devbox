@@ -57,6 +57,7 @@ Vagrant.configure(2) do |config|
   # Packages
   config.vm.provision 'shell', path: './scripts/git.sh'
   config.vm.provision 'shell', path: './scripts/tmux.sh'
+  config.vm.provision 'shell', path: './scripts/silver-searcher.sh'
   config.vm.provision 'shell', path: './scripts/docker.sh', args: 'permissions'
 
   # Languages
