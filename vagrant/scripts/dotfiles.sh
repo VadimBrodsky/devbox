@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo ">>> Cloning dotfiles"
-mkdir ~/code && cd ~/code
+cd ~/code
 git clone https://github.com/VadimBrodsky/dotfiles.git
 
 

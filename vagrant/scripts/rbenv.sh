@@ -15,4 +15,3 @@ echo 'eval "$(rbenv init -)"' >> ~/.bashrc
 
 echo ">>> Installing Ruby Build"
 git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
-
