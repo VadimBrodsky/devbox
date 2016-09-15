@@ -11,5 +11,5 @@ ln -s ~/code/dotfiles/git/gitignore ~/.gitignore
 ln -s ~/code/dotfiles/vimrc ~/.vimrc
 ln -s ~/code/dotfiles/gvimrc ~/.gvimrc
 ln -s ~/code/dotfiles/vim ~/.vim
-ln -s ~/code/dotfiles/tmux/tmux.conf ~/.tmux.conf
+ln -s ~/code/dotfiles/tmux.conf ~/.tmux.conf
 ln -s ~/code/dotfiles/agignore ~/.agignore
